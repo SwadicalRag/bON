@@ -15,6 +15,26 @@ As of version 27092015, bON:
  - Does your homework for you. (sometimes)
  - Re-uses table keys and values where possible, saving huge amounts of data with big tables.
 
+## Supported types
+ - number
+ - string
+ - table (obviously)
+ - nil (yes, this is a joke)
+
+#### GLua only:
+ - Entity
+ - Vehicle
+ - Weapon
+ - NextBot
+ - NPC
+ - Player
+ - Vector
+ - Color
+ - ConVar (no, this is not a joke.)
+
+#### Lua only:
+ - function (no, this is not a joke.)
+
 ## Benchmarks? Benchmarks.
 Against [vON](https://github.com/vercas/vON):
 
