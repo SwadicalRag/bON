@@ -149,7 +149,8 @@ local function serializeAny(obj,dictionary)
 				--log("newSerialize")
 				dictionaryLookup[dictionary] = dictionaryLookup[dictionary] + 1
 				dictionary[obj] = dictionaryLookup[dictionary]
-				return serializer(obj)
+				local code,data = serializer(obj)
+				return code..data
 			else
 				--unknown type.
 				logWarn("Unknown type "..obj_type.."! Skipping.")
@@ -180,8 +181,9 @@ local function getNextBlock(str,JMP)
 		if not (start or finish) then
 			error("Stuck! "..s_sub(str,JMP,-1).."\t"..tostring(start)..", "..tostring(finish))
 		end
+		local out = s_sub(str,start,finish+1)
 
-		return s_sub(str,start,finish+1),finish+2,false
+		return out,finish+2,false
 	end
 end
 
@@ -257,7 +259,7 @@ end
 registerSerializer {
 	code = "s",
 	serialize = function(var)
-		return "s"..escapeSpecial(var)
+		return "s",escapeSpecial(var)
 	end,
 	deserialize = function(data)
 		return unescapeSpecial(data)
@@ -269,7 +271,7 @@ registerSerializer {
 	code = "n",
 	serialize = function(var)
 		--return s_format("%x",var)
-		return "n"..var
+		return "n",var
 	end,
 	deserialize = function(data)
 		--return tonumber(data,16) or 0
@@ -282,9 +284,9 @@ registerSerializer {
 	code = "b",
 	serialize = function(var)
 		if var then
-			return "T"
+			return "T",""
 		else
-			return "F"
+			return "F",""
 		end
 	end,
 	type = "boolean"
@@ -339,7 +341,7 @@ if(gmod) then
 	registerSerializer {
 		code = "e",
 		serialize = function(obj)
-			return "e"..ent_index(obj)
+			return "e",ent_index(obj)
 		end,
 		deserialize = function(num)
 			return Entity(tonumber(num))
@@ -357,7 +359,7 @@ if(gmod) then
 	registerSerializer {
 		code = "v",
 		serialize = function(obj)
-			return "v"..s_format("^%f,%f,%f$",obj.x,obj.y,obj.z)
+			return "v",s_format("^%f,%f,%f$",obj.x,obj.y,obj.z)
 		end,
 		deserialize = function(data)
 			local x,y,z = s_match(data,"^([%d.]+),([%d.]+),([%d.]+)$")
@@ -369,7 +371,7 @@ if(gmod) then
 	registerSerializer {
 		code = "c",
 		serialize = function(obj)
-			return "c"..s_format("^%f,%f,%f,%f$",obj.r,obj.g,obj.b)
+			return "c",s_format("^%f,%f,%f,%f$",obj.r,obj.g,obj.b)
 		end,
 		deserialize = function(data)
 			local r,g,b,a = s_match(data,"^([%d.]+),([%d.]+),([%d.]+),([%d.]+)$")
@@ -381,7 +383,7 @@ if(gmod) then
 	registerSerializer {
 		code = "C",
 		serialize = function(obj)
-			return "C"..escapeSpecial(cv_GetName(obj))
+			return "C",escapeSpecial(cv_GetName(obj))
 		end,
 		deserialize = function(name)
 			return GetConVar(unescapeSpecial(name))
@@ -398,7 +400,7 @@ else
 	registerSerializer {
 		code = "f",
 		serialize = function(obj)
-			return "f"..escapeSpecial(s_dump(obj))
+			return "f",escapeSpecial(s_dump(obj))
 		end,
 		deserialize = function(data)
 			return loadstring(unescapeSpecial(data),"b")
