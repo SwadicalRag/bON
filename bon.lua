@@ -361,8 +361,8 @@ if(gmod) then
 		serialize = function(obj)
 			return "v",s_format("^%f,%f,%f$",obj.x,obj.y,obj.z)
 		end,
-		deserialize = function(num)
-			local x,y,z = s_match("^([%d.]+),([%d.]+),([%d.]+)$")
+		deserialize = function(data)
+			local x,y,z = s_match(data,"^([%d.]+),([%d.]+),([%d.]+)$")
 			return Vector(tonumber(x),tonumber(y),tonumber(z))
 		end,
 		type = "Vector"
@@ -373,8 +373,8 @@ if(gmod) then
 		serialize = function(obj)
 			return "c",s_format("^%f,%f,%f,%f$",obj.r,obj.g,obj.b)
 		end,
-		deserialize = function(num)
-			local r,g,b,a = s_match("^([%d.]+),([%d.]+),([%d.]+),([%d.]+)$")
+		deserialize = function(data)
+			local r,g,b,a = s_match(data,"^([%d.]+),([%d.]+),([%d.]+),([%d.]+)$")
 			return Color(tonumber(r),tonumber(g),tonumber(b),tonumber(a))
 		end,
 		type = "Color"
