@@ -76,13 +76,10 @@ tbl.memes.recurse = tbl
 ```
 
 #### sON output:
-``
-{;n1;n-1337;n-99.99;n2;n3;n100;n101;n121;n143;n144;sma"ra;sare;smere;{;n500;n600;n700;n800;n900;n9001;F=slol?;T=22;n1997=svasile;{;22=24;24=22;}={;sfalse=22;24=strue;};spere=24;};24;22;22;24;22;24;24;22;24;swhoo=n1234;24=22;smemes={;stooMuchSwag={;sbecause i am swad;};stableInsideTable={;swow!!!!!!!!!!!!!!!!!!!;41;41;41;swow;41;42;41;42;42;42;42;41;42;41;42;42;42;};sXD=42;};sayy=slmao;{;22=24;24=22;}={;29=22;24=30;};n1337=n1338;smara=13;14=22;}
-``
+``{;n1;n-1337;n-99.99;n2;n3;n100;n101;n121;n143;n144;sma"ra;sare;smere;{;n500;n600;n700;n800;n900;n9001;F=slol?;T=22;n1997=svasile;{;22=24;24=22;}={;sfalse=22;24=strue;};spere=24;};24;22;22;24;22;24;24;22;24;swhoo=n1234;24=22;smemes={;stooMuchSwag={;sbecause i am swad;};stableInsideTable={;swow!!!!!!!!!!!!!!!!!!!;41;41;41;swow;41;42;41;42;42;42;42;41;42;41;42;42;42;};sXD=42;};sayy=slmao;{;22=24;24=22;}={;29=22;24=30;};n1337=n1338;smara=13;14=22;}``
+
 #### vON output:
-``
-n1;n-1337;n-99.99;n2;n3;n100;n101;n121;n143;n144;"ma\"rav""arev""merev"{n500;n600;n700;n800;n900;n9001~b0:"lol?v"b1:0{~b0:11:0}:{~"falsev":b01:"truev"}n1997:"vasilev""perev":b1}b100101101~"marav":"arev"b1:0"whoov":n1234;n1337:n1338;"ayyv":"lmaov""memesv":{~"tableInsideTablev":{"wow!!!!!!!!!!!!!!!!!!!v""wow!!!!!!!!!!!!!!!!!!!v""wow!!!!!!!!!!!!!!!!!!!v""wow!!!!!!!!!!!!!!!!!!!v""wowv""wow!!!!!!!!!!!!!!!!!!!v""wowv""wow!!!!!!!!!!!!!!!!!!!v""wowv""wowv""wowv""wowv""wow!!!!!!!!!!!!!!!!!!!v""wowv""wow!!!!!!!!!!!!!!!!!!!v""wowv""wowv""wowv"}"XDv":"wowv""tooMuchSwagv":{"because i am swadv"}}"merev":b0{~b0:11:0}:{~"falsev":b01:"truev"}
-``
+``n1;n-1337;n-99.99;n2;n3;n100;n101;n121;n143;n144;"ma\"rav""arev""merev"{n500;n600;n700;n800;n900;n9001~b0:"lol?v"b1:0{~b0:11:0}:{~"falsev":b01:"truev"}n1997:"vasilev""perev":b1}b100101101~"marav":"arev"b1:0"whoov":n1234;n1337:n1338;"ayyv":"lmaov""memesv":{~"tableInsideTablev":{"wow!!!!!!!!!!!!!!!!!!!v""wow!!!!!!!!!!!!!!!!!!!v""wow!!!!!!!!!!!!!!!!!!!v""wow!!!!!!!!!!!!!!!!!!!v""wowv""wow!!!!!!!!!!!!!!!!!!!v""wowv""wow!!!!!!!!!!!!!!!!!!!v""wowv""wowv""wowv""wowv""wow!!!!!!!!!!!!!!!!!!!v""wowv""wow!!!!!!!!!!!!!!!!!!!v""wowv""wowv""wowv"}"XDv":"wowv""tooMuchSwagv":{"because i am swadv"}}"merev":b0{~b0:11:0}:{~"falsev":b01:"truev"}``
 
 #### Benchmark output (using os.clock):
 ```
