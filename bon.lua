@@ -74,20 +74,22 @@ local reservedChars = {
 
 local stringEscapeTable = {}
 local stringUnescapeTable = {}
+local unescapeLookupString = "\\["
 for i=1,#reservedChars do
 	stringEscapeTable[reservedChars[i]] = s_format("\\%01x",i)
 	stringUnescapeTable[s_format("\\%01x",i)] = reservedChars[i]
+	unescapeLookupString = unescapeLookupString..s_format("%01x",i)
 end
+unescapeLookupString = unescapeLookupString.."]"
 
 local reservedCharsString = "[%"..t_concat(reservedChars,"%").."]"
-local reservedCharsStringEx = "[^%"..t_concat(reservedChars,"%").."]"
 
 local function escapeSpecial(str)
 	return (s_gsub(str,reservedCharsString,stringEscapeTable))
 end
 
 local function unescapeSpecial(str)
-	return (s_gsub(str,"\\(.)",stringUnescapeTable))
+	return (s_gsub(str,unescapeLookupString,stringUnescapeTable))
 end
 
 local function registerSerializer(params)
