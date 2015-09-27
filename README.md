@@ -18,6 +18,7 @@ As of version 27092015, bON:
 ## Supported types
  - number
  - string
+ - boolean
  - table (obviously)
  - nil (yes, this is a joke)
 
