@@ -39,9 +39,9 @@ As of version 27092015, bON:
 ## Benchmarks? Benchmarks.
 Against [vON](https://github.com/vercas/vON):
 
-(tested with no recursion, as vON did not like recursing tables when I tested)
+(tested with no recursion, as vON did not like recursing tables)
 
-Tested with LuaJIT 2.1.0-alpha
+Tested with Lua 5.3.0
 #### Table used (derived from the vON example):
 ```lua
 local tbl = {
@@ -104,17 +104,18 @@ tbl.memes.recurse = tbl
 
 #### Benchmark output (using os.clock):
 ```
-sON serialization       448     characters
+bON serialization       439     characters
 vON serialization       633     characters
 Serialization
-bON: 0.168 sec
-vON: 0.135 sec
-vON wins by 124.44444444444%
+bON: 0.397 sec
+vON: 0.231 sec
+vON wins by 171.86147186147%
 Deserialization
-bON: 0.001 sec
-vON: 0.053 sec
-bON wins by 5300%
+bON: 0.225 sec
+vON: 0.202 sec
+vON wins by 111.38613861386%
 ```
+And that's the price of having compact data. D:
 
 #### Example Usage
 First, place ``bon.lua`` somewhere in your working directory
