@@ -1,8 +1,8 @@
-local DEBUG = true
+local DEBUG = false
 local DEBUG_EXTENDED = false
 
 local cpu = os.clock
-if(VERSIONSTR) then
+if(gmod) then
 	cpu = SysTime
 end
 
@@ -68,8 +68,7 @@ local reservedChars = {
 	";",
 	"{",
 	"}",
-	"[",
-	"]",
+	".",
 	--"\0"
 }
 
@@ -92,10 +91,22 @@ local function unescapeSpecial(str)
 end
 
 local function registerSerializer(params)
-	specialCodes[params.type] = params.code
-	specialCodesLookup[params.code] = params.type
-	serializeTypes[params.type] = params.serialize
-	deserializeTypes[params.code] = params.deserialize
+	if(specialCodesLookup[params.code]) then logWarn("A serialization code is being overwritten! "..params.code) end
+	if(specialCodes[params.type]) then logWarn("A serialization type is being overwritten! "..params.type) end
+
+	if(params.types) then
+		for i=1,#params.types do
+			specialCodes[params.types[i]] = params.code
+			specialCodesLookup[params.code] = params.types[i]
+			serializeTypes[params.types[i]] = params.serialize
+			deserializeTypes[params.code] = params.deserialize
+		end
+	else
+		specialCodes[params.type] = params.code
+		specialCodesLookup[params.code] = params.type
+		serializeTypes[params.type] = params.serialize
+		deserializeTypes[params.code] = params.deserialize
+	end
 end
 
 local function serializeAny(obj,dictionary)
@@ -296,6 +307,107 @@ registerSerializer {
 	end,
 	type = "__"
 }
+
+--what.
+--this should never be needed.
+--[[
+registerSerializer {
+	code = "N",
+	serialize = function()
+		return "n","meme"
+	end,
+	deserialize = function()
+		return nil
+	end,
+	type = "nil"
+}
+]]
+
+if(gmod) then
+	--globals
+	local GetConVar = GetConVar
+	local Vector = Vector
+	local Color = Color
+	local Entity = Entity
+
+	--Entity
+	local ent = NULL
+	local ent_index = ent.EntIndex
+
+	--ConVar
+	local cv_name = GetConVar("name")
+	local cv_GetName = cv_name.GetName
+
+	registerSerializer {
+		code = "e",
+		serialize = function(obj)
+			return "e",ent_index(obj)
+		end,
+		deserialize = function(num)
+			return Entity(tonumber(num))
+		end,
+		types = {
+			"Entity",
+			"Vehicle",
+			"Weapon",
+			"NextBot",
+			"NPC",
+			"Player"
+		}
+	}
+
+	registerSerializer {
+		code = "v",
+		serialize = function(obj)
+			return "v",s_format("^%f,%f,%f$",obj.x,obj.y,obj.z)
+		end,
+		deserialize = function(num)
+			local x,y,z = s_match("^([%d.]+),([%d.]+),([%d.]+)$")
+			return Vector(tonumber(x),tonumber(y),tonumber(z))
+		end,
+		type = "Vector"
+	}
+
+	registerSerializer {
+		code = "c",
+		serialize = function(obj)
+			return "c",s_format("^%f,%f,%f,%f$",obj.r,obj.g,obj.b)
+		end,
+		deserialize = function(num)
+			local r,g,b,a = s_match("^([%d.]+),([%d.]+),([%d.]+),([%d.]+)$")
+			return Color(tonumber(r),tonumber(g),tonumber(b),tonumber(a))
+		end,
+		type = "Color"
+	}
+
+	registerSerializer {
+		code = "C",
+		serialize = function(obj)
+			return "C",escapeSpecial(cv_GetName(obj))
+		end,
+		deserialize = function(name)
+			return GetConVar(unescapeSpecial(name))
+		end,
+		type = "ConVar"
+	}
+else
+	--globals
+	local loadstring = loadstring
+
+	--string
+	local s_dump = string.dump
+
+	registerSerializer {
+		code = "f",
+		serialize = function(obj)
+			return "f",escapeSpecial(s_dump(obj))
+		end,
+		deserialize = function(data)
+			return loadstring(unescapeSpecial(data),"b")
+		end,
+		type = "function"
+	}
+end
 
 return {
 	serialize = serialize,
