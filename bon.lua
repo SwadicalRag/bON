@@ -310,9 +310,6 @@ registerSerializer {
 	type = "__"
 }
 
---what.
---this should never be needed.
---[[
 registerSerializer {
 	code = "N",
 	serialize = function()
@@ -323,7 +320,6 @@ registerSerializer {
 	end,
 	type = "nil"
 }
-]]
 
 if(gmod) then
 	--globals
@@ -402,7 +398,10 @@ else
 	registerSerializer {
 		code = "f",
 		serialize = function(obj)
-			return "f",escapeSpecial(s_dump(obj))
+			local suc,ret = pcall(function()
+				return escapeSpecial(s_dump(obj))
+			end)
+			if suc then return "f",ret else return "s","c-function" end
 		end,
 		deserialize = function(data)
 			return loadstring(unescapeSpecial(data),"b")
