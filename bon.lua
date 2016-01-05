@@ -150,7 +150,7 @@ local function serializeAny(obj,dictionary)
 			end
 
 			dictionaryLookup[obj] = dictionaryIndex
-			out[#out+1] = ";}"
+			out[#out+1] = "}"
 			return t_concat(out,"")
 		else
 			local serializer = serializeTypes[obj_type]
