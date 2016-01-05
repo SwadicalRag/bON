@@ -113,6 +113,7 @@ end
 
 local function serializeAny(obj,dictionary)
 	--first check if it has already been serialized
+	if obj == nil then return "n" end
 	local dictionaryValue = dictionary[obj]
 	if(dictionaryValue ~= nil) then
 		--log("recurseDict")
