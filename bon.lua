@@ -133,7 +133,7 @@ local function serializeAny(obj,dictionary)
 			local ordered = {}
 
 			for i=1,#obj do
-				if obj == nil then ordered,out = {},{"{"} break end
+				if obj[i] == nil then ordered,out = {},{"{"} break end
 				ordered[i] = true
 				out[#out+1] = serializeAny(obj[i],dictionary)
 				out[#out+1] = ";"
