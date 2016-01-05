@@ -113,8 +113,8 @@ end
 
 local function serializeAny(obj,dictionary)
 	--first check if it has already been serialized
-	if obj == nil then return "n" end
-	if obj ~= obj then return "N" end
+	if obj == nil then return "N" end
+	if obj ~= obj then return "X" end
 	local dictionaryValue = dictionary[obj]
 	if(dictionaryValue ~= nil) then
 		--log("recurseDict")
@@ -133,6 +133,7 @@ local function serializeAny(obj,dictionary)
 			local ordered = {}
 
 			for i=1,#obj do
+				if obj == nil then ordered,out = {},{"{"} break end
 				ordered[i] = true
 				out[#out+1] = serializeAny(obj[i],dictionary)
 				out[#out+1] = ";"
@@ -290,7 +291,7 @@ registerSerializer {
 }
 
 registerSerializer {
-	code = "N",
+	code = "X",
 	deserialize = function(data)
 		return 0/0
 	end,
@@ -328,7 +329,7 @@ registerSerializer {
 registerSerializer {
 	code = "N",
 	serialize = function()
-		return "n","meme"
+		return "n",""
 	end,
 	deserialize = function()
 		return nil
