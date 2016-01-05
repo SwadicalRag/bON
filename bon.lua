@@ -122,7 +122,7 @@ local function serializeAny(obj,dictionary)
 		if(obj_type == "table") then
 			--log("newTable")
 			--if it's a table that hasn't already been serialised, begin a new table block
-			local out = {}
+			local out = {"{"}
 
 			dictionaryLookup[dictionary] = dictionaryLookup[dictionary] + 1
 			dictionary[obj] = dictionaryLookup[dictionary]
@@ -133,17 +133,22 @@ local function serializeAny(obj,dictionary)
 			for i=1,#obj do
 				ordered[i] = true
 				out[#out+1] = serializeAny(obj[i],dictionary)
+				out[#out+1] = ";"
 			end
 
 			for k,v in next,obj do
 				if(not ordered[k]) then
 					--don't resereialize ordered table entries
-					out[#out+1] = serializeAny(k,dictionary).."="..serializeAny(v,dictionary)
+					out[#out+1] = serializeAny(k,dictionary)
+					out[#out+1] = "="
+					out[#out+1] = serializeAny(v,dictionary)
+					out[#out+1] = ";"
 				end
 			end
 
 			dictionaryLookup[obj] = dictionaryIndex
-			return "{"..t_concat(out,";")..";}"
+			out[#out+1] = ";}"
+			return t_concat(out,"")
 		else
 			local serializer = serializeTypes[obj_type]
 			if(serializer) then
