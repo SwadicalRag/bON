@@ -114,6 +114,7 @@ end
 local function serializeAny(obj,dictionary)
 	--first check if it has already been serialized
 	if obj == nil then return "n" end
+	if obj ~= obj then return "N" end
 	local dictionaryValue = dictionary[obj]
 	if(dictionaryValue ~= nil) then
 		--log("recurseDict")
@@ -286,6 +287,14 @@ registerSerializer {
 		return tonumber(data) or 0
 	end,
 	type = "number"
+}
+
+registerSerializer {
+	code = "N",
+	deserialize = function(data)
+		return 0/0
+	end,
+	type = "not a number"
 }
 
 registerSerializer {
