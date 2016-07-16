@@ -213,6 +213,8 @@ local function deserializeBlock(str,dictionary)
 	end
 end
 
+local UNIQUE_NIL = {}
+
 local function deserializeAny(str,dictionary)
 	local out = {}
 	dictionary[#dictionary+1] = out
@@ -245,8 +247,6 @@ local function deserializeAny(str,dictionary)
 			local data,operand = s_match(section,"^(.+)(.)$")
 			--log(JMP,"data",data,"operand",operand)
 
-			local lastArrayIdx = 0
-
 			if(operand == "=") then
 				lastKey = deserializeBlock(data,dictionary)
 			else
@@ -254,8 +254,12 @@ local function deserializeAny(str,dictionary)
 					out[lastKey] = deserializeBlock(data,dictionary)
 					lastKey = nil
 				else
-					lastArrayIdx = lastArrayIdx + 1
-					out[lastArrayIdx] = deserializeBlock(data,dictionary)
+					local val = deserializeBlock(data,dictionary)
+					if val == nil then
+						out[#out + 1] = UNIQUE_NIL
+					else
+						out[#out + 1] = val
+					end
 				end
 			end
 		end
@@ -264,8 +268,35 @@ local function deserializeAny(str,dictionary)
 	return out
 end
 
+local function clean(t,lookup)
+	lookup = lookup or {}
+	if(lookup[t]) then return end
+	lookup[t] = true
+
+	for k,v in pairs(t) do
+		if v == UNIQUE_NIL then
+			t[v] = nil
+		else
+			if(type(k) == "table") then
+				if not lookup[k] then
+					clean(k,lookup)
+				end
+			end
+			if(type(v) == "table") then
+				if not lookup[v] then
+					clean(v,lookup)
+				end
+			end
+		end
+	end
+end
+
 local function deserialize(str)
-	return deserializeAny(str,{})
+	local des = deserializeAny(str,{})
+
+	clean(des)
+
+	return des
 end
 
 registerSerializer {
