@@ -133,7 +133,7 @@ local function serializeAny(obj,dictionary)
 			local ordered = {}
 
 			for i=1,#obj do
-				if obj[i] == nil then ordered,out = {},{"{"} break end
+				-- if obj[i] == nil then ordered,out = {},{"{"} break end
 				ordered[i] = true
 				out[#out+1] = serializeAny(obj[i],dictionary)
 				out[#out+1] = ";"
@@ -148,8 +148,7 @@ local function serializeAny(obj,dictionary)
 					out[#out+1] = ";"
 				end
 			end
-
-			dictionaryLookup[obj] = dictionaryIndex
+			
 			out[#out+1] = "}"
 			return t_concat(out,"")
 		else
@@ -246,6 +245,8 @@ local function deserializeAny(str,dictionary)
 			local data,operand = s_match(section,"^(.+)(.)$")
 			--log(JMP,"data",data,"operand",operand)
 
+			local lastArrayIdx = 0
+
 			if(operand == "=") then
 				lastKey = deserializeBlock(data,dictionary)
 			else
@@ -253,7 +254,8 @@ local function deserializeAny(str,dictionary)
 					out[lastKey] = deserializeBlock(data,dictionary)
 					lastKey = nil
 				else
-					out[#out+1] = deserializeBlock(data,dictionary)
+					lastArrayIdx = lastArrayIdx + 1
+					out[lastArrayIdx] = deserializeBlock(data,dictionary)
 				end
 			end
 		end
