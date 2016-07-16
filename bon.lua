@@ -462,6 +462,6 @@ end
 return {
 	serialize = serialize,
 	deserialize = deserialize,
-	VERSION = 27092015,
-	VERSIONSTR = "27/09/2015"
+	VERSION = 16072016,
+	VERSIONSTR = "16/07/2016"
 }
